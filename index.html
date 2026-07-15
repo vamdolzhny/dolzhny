@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ДОЛЖНЫ — навигатор по вашим правам</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;700;800&family=Inter:wght@400;500;600&family=PT+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#17191d;
+    --card:#1f2228;
+    --card-hover:#242830;
+    --line:#2e323a;
+    --ink:#ece9e2;
+    --muted:#9ba1ab;
+    --amber:#f0a431;
+    --amber-deep:#c77f14;
+    --amber-dim:rgba(240,164,49,.12);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:28px 18px 60px}
+
+  /* ---------- шапка ---------- */
+  header{margin-bottom:26px}
+  .brand{
+    display:inline-block;
+    font-family:'Bitter',serif;
+    font-weight:800;
+    font-size:clamp(34px,9vw,52px);
+    letter-spacing:.04em;
+    color:var(--amber);
+    border:3px solid var(--amber);
+    border-radius:6px;
+    padding:2px 14px 4px;
+    transform:rotate(-1.6deg);
+    box-shadow:0 0 0 1px rgba(240,164,49,.25) inset;
+    user-select:none;
+  }
+  .brand::after{content:'';display:block}
+  .tagline{
+    margin-top:14px;
+    color:var(--muted);
+    font-size:15px;
+    max-width:46ch;
+  }
+  .tagline b{color:var(--ink);font-weight:600}
+
+  /* ---------- список ситуаций ---------- */
+  .cards{display:flex;flex-direction:column;gap:10px}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px 18px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    transition:background .15s,border-color .15s,transform .1s;
+    text-align:left;
+    width:100%;
+    color:var(--ink);
+    font:inherit;
+  }
+  .card:hover{background:var(--card-hover);border-color:#3a4049}
+  .card:active{transform:scale(.985)}
+  .card:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+  .card .emoji{font-size:26px;flex-shrink:0;width:36px;text-align:center}
+  .card .t{font-weight:600;font-size:16px}
+  .card .s{color:var(--muted);font-size:13.5px;margin-top:2px}
+  .card .arrow{margin-left:auto;color:var(--amber);font-size:18px;flex-shrink:0}
+
+  /* ---------- детальный экран ---------- */
+  .detail{display:none;animation:fade .18s ease}
+  .detail.open{display:block}
+  .list.hidden{display:none}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){
+    .detail{animation:none}
+    html{scroll-behavior:auto}
+  }
+  .back{
+    background:none;border:none;color:var(--muted);
+    font:inherit;font-size:14.5px;cursor:pointer;
+    padding:6px 0;margin-bottom:14px;display:inline-flex;align-items:center;gap:6px;
+  }
+  .back:hover{color:var(--amber)}
+  .back:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:4px}
+  .d-title{
+    font-family:'Bitter',serif;
+    font-weight:700;
+    font-size:clamp(22px,6vw,28px);
+    line-height:1.25;
+    margin-bottom:16px;
+  }
+  .stamp{
+    display:inline-block;
+    font-family:'Bitter',serif;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--amber);
+    border:2px solid var(--amber);
+    border-radius:5px;
+    padding:8px 14px;
+    transform:rotate(-1.2deg);
+    background:var(--amber-dim);
+    margin-bottom:22px;
+    line-height:1.4;
+  }
+  .sec{margin-bottom:22px}
+  .sec h3{
+    font-size:12.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:10px;
+    font-weight:600;
+  }
+  .law{
+    display:flex;flex-wrap:wrap;gap:8px;
+  }
+  .law span{
+    font-family:'PT Mono',monospace;
+    font-size:13px;
+    color:var(--amber);
+    background:var(--amber-dim);
+    border:1px solid rgba(240,164,49,.3);
+    border-radius:6px;
+    padding:5px 10px;
+  }
+  .lawnote{color:var(--muted);font-size:13.5px;margin-top:8px}
+  ol.steps{list-style:none;counter-reset:st}
+  ol.steps li{
+    counter-increment:st;
+    position:relative;
+    padding:0 0 16px 44px;
+  }
+  ol.steps li::before{
+    content:counter(st);
+    position:absolute;left:0;top:0;
+    width:28px;height:28px;
+    border-radius:50%;
+    background:var(--card);
+    border:1.5px solid var(--amber);
+    color:var(--amber);
+    font-family:'PT Mono',monospace;
+    font-size:14px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li:not(:last-child)::after{
+    content:'';position:absolute;left:13.5px;top:32px;bottom:2px;
+    width:1px;background:var(--line);
+  }
+  ol.steps b{color:var(--amber);font-weight:600}
+  .deadline{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--amber);
+    border-radius:10px;
+    padding:13px 16px;
+    font-size:14.5px;
+  }
+  .deadline b{color:var(--amber)}
+  .where{display:flex;flex-direction:column;gap:8px}
+  .where div{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:11px 15px;
+    font-size:14.5px;
+  }
+  .where b{display:block;font-size:14.5px;margin-bottom:1px}
+  .where small{color:var(--muted);font-size:13px}
+
+  .card--ask{
+    border:1.5px dashed rgba(240,164,49,.5);
+    background:transparent;
+  }
+  .card--ask:hover{background:var(--amber-dim);border-color:var(--amber)}
+  .card--ask .t{color:var(--amber)}
+  .ask-text{color:var(--muted);font-size:15px;margin-bottom:22px;max-width:52ch}
+  .ask-text b{color:var(--ink);font-weight:600}
+  .tg-btn{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--amber);
+    color:#17191d;
+    font-weight:600;font-size:16px;
+    border:none;border-radius:12px;
+    padding:14px 22px;
+    cursor:pointer;text-decoration:none;
+    transition:background .15s,transform .1s;
+  }
+  .tg-btn:hover{background:#f7b54e}
+  .tg-btn:active{transform:scale(.97)}
+  .tg-btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .ask-hint{color:var(--muted);font-size:13px;margin-top:14px}
+
+  footer{
+    margin-top:44px;
+    padding-top:18px;
+    border-top:1px solid var(--line);
+    color:var(--muted);
+    font-size:12.5px;
+    line-height:1.6;
+  }
+  footer a{color:var(--amber);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">ДОЛЖНЫ</div>
+    <p class="tagline">Навигатор по правам, о которых молчат. Выберите ситуацию — получите <b>план действий со ссылками на закон</b>. Простыми словами.</p>
+  </header>
+
+  <div class="list" id="list">
+    <div class="cards" id="cards"></div>
+  </div>
+
+  <div class="detail" id="detail">
+    <button class="back" id="backBtn">← Все ситуации</button>
+    <div id="detailContent"></div>
+  </div>
+
+  <footer>
+    Информация актуальна на июль 2026 года и носит справочный характер — это не индивидуальная юридическая консультация. В сложных случаях обращайтесь к юристу.<br>
+    Канал <b style="color:var(--amber)">ВАМ ДОЛЖНЫ</b> — ваши права простыми словами.
+  </footer>
+</div>
+
+<script>
+const DATA = [
+  {
+    emoji:"💰",
+    title:"Задерживают зарплату",
+    sub:"Компенсация за каждый день + право не выходить на работу",
+    stamp:"Вам должны: зарплату + компенсацию за каждый день просрочки",
+    law:["ТК РФ ст. 136","ТК РФ ст. 236","ТК РФ ст. 142","УК РФ ст. 145.1"],
+    lawnote:"Зарплата выплачивается не реже двух раз в месяц. За каждый день задержки — компенсация не ниже 1/150 ключевой ставки ЦБ от невыплаченной суммы. Она начисляется автоматически, просить не нужно.",
+    steps:[
+      "Напишите работодателю <b>письменное заявление</b> с требованием выплатить долг и компенсацию по ст. 236 ТК. Один экземпляр — себе, с отметкой о приёме.",
+      "Если задержка <b>больше 15 дней</b> — вы вправе приостановить работу до выплаты (ст. 142 ТК), письменно уведомив работодателя. Средний заработок за это время сохраняется.",
+      "Подайте жалобу в трудовую инспекцию — онлайн через <b>онлайнинспекция.рф</b>. Это бесплатно и часто решает вопрос без суда.",
+      "Параллельно или следом — заявление в <b>прокуратуру</b>: задержка зарплаты — их прямой профиль.",
+      "Суд: по трудовым спорам работник <b>не платит госпошлину</b> (ст. 393 ТК). Срок обращения — 1 год со дня, когда зарплату должны были выплатить (ст. 392 ТК)."
+    ],
+    deadline:"<b>1 год</b> — срок обращения в суд по невыплате зарплаты (ст. 392 ТК РФ). При полной невыплате свыше 2 месяцев работодателю грозит уголовная ответственность.",
+    where:[
+      ["Трудовая инспекция (ГИТ)","онлайнинспекция.рф — жалоба онлайн, бесплатно"],
+      ["Прокуратура","лично, по почте или через Госуслуги"],
+      ["Районный суд","без госпошлины, срок — 1 год"]
+    ]
+  },
+  {
+    emoji:"🛍️",
+    title:"Купили некачественный товар",
+    sub:"Возврат денег за 10 дней + неустойка 1% в день",
+    stamp:"Вам должны: деньги за товар в течение 10 дней",
+    law:["ЗоЗПП ст. 18","ЗоЗПП ст. 22","ЗоЗПП ст. 23","ЗоЗПП п. 6 ст. 13"],
+    lawnote:"При недостатке товара вы сами выбираете: возврат денег, замена, бесплатный ремонт или скидка. Продавец не вправе навязывать ремонт вместо возврата.",
+    steps:[
+      "Напишите продавцу <b>письменную претензию</b>: что купили, какой недостаток, чего требуете (например, вернуть деньги). Два экземпляра, на вашем — отметка о приёме или отправка заказным письмом.",
+      "На возврат денег у продавца <b>10 дней</b> (ст. 22 ЗоЗПП). Дальше капает неустойка — <b>1% от цены товара за каждый день</b> (ст. 23).",
+      "«Чека нет» — не отговорка: отсутствие чека не лишает вас прав (ст. 18). Подойдёт выписка по карте, свидетели, переписка.",
+      "Если продавец молчит — жалоба в <b>Роспотребнадзор</b> через сайт или Госуслуги.",
+      "Суд: госпошлины нет при иске до 1 млн ₽, плюс суд взыщет с продавца <b>штраф 50%</b> от присуждённой суммы в вашу пользу (п. 6 ст. 13 ЗоЗПП)."
+    ],
+    deadline:"<b>10 дней</b> на возврат денег после претензии. Недостаток можно предъявлять в течение гарантии, а если её нет — в пределах <b>2 лет</b> с покупки (ст. 19 ЗоЗПП).",
+    where:[
+      ["Продавец","письменная претензия — обязательный первый шаг"],
+      ["Роспотребнадзор","жалоба онлайн, инициирует проверку"],
+      ["Суд","без пошлины до 1 млн ₽ + штраф 50% в вашу пользу"]
+    ]
+  },
+  {
+    emoji:"✈️",
+    title:"Задержали или отменили рейс",
+    sub:"Еда, гостиница и компенсация — за счёт авиакомпании",
+    stamp:"Вам должны: напитки, питание, гостиницу и компенсацию",
+    law:["ФАП-82 п. 99","ВК РФ ст. 120","ВК РФ ст. 126"],
+    lawnote:"Обслуживание при задержке — обязанность перевозчика, бесплатно и без вопросов: от 2 часов — напитки и 2 звонка/письма, от 4 часов — горячее питание, от 8 часов днём (6 ночью) — гостиница и трансфер.",
+    steps:[
+      "Прямо в аэропорту <b>поставьте отметку о задержке</b> на посадочном талоне или возьмите справку у представителя авиакомпании.",
+      "Требуйте положенное по времени ожидания: <b>2 ч — напитки, 4 ч — горячее питание, 8 ч (6 ночью) — гостиница</b>. Если не дали — сохраняйте чеки, расходы взыщете.",
+      "При отмене рейса вы вправе получить <b>полный возврат</b> стоимости билета — даже для «невозвратного» тарифа.",
+      "Направьте перевозчику <b>претензию</b>: компенсация за задержку по ст. 120 ВК + возмещение расходов. Срок подачи — 6 месяцев (ст. 126 ВК).",
+      "Для международных рейсов компенсации выше — действует <b>Монреальская конвенция</b>. Отказали — Ространснадзор и суд."
+    ],
+    deadline:"<b>6 месяцев</b> — срок предъявления претензии авиакомпании по внутренним рейсам (ст. 126 ВК РФ). Чеки и справка о задержке — ваши главные доказательства.",
+    where:[
+      ["Авиакомпания","претензия через сайт или представительство"],
+      ["Ространснадзор","надзор за перевозчиками"],
+      ["Суд","по правам потребителя — без пошлины до 1 млн ₽"]
+    ]
+  },
+  {
+    emoji:"🏠",
+    title:"ЖКХ: плохие услуги или завышенный счёт",
+    sub:"Перерасчёт + штраф 50% с управляющей компании",
+    stamp:"Вам должны: перерасчёт + штраф 50% при неверном счёте",
+    law:["ПП РФ № 354","ЖК РФ ст. 157","ЖК РФ ч. 6 ст. 157"],
+    lawnote:"Холодные батареи, ржавая вода, перебои — это «услуга ненадлежащего качества», за неё положен перерасчёт. За неверно выставленный счёт УК платит вам штраф 50% от суммы превышения.",
+    steps:[
+      "Зафиксируйте нарушение: <b>заявка в аварийно-диспетчерскую службу</b> (по телефону — попросите номер заявки). УК обязана составить <b>акт проверки</b>.",
+      "Подайте в УК письменное <b>заявление на перерасчёт</b> по разделу IX Правил № 354, приложив номер заявки/акт.",
+      "Счёт завышен? Потребуйте <b>проверку начислений письменно</b> — при подтверждении ошибки вам положен штраф <b>50% от превышения</b> (ч. 6 ст. 157 ЖК).",
+      "УК игнорирует — жалоба в <b>Государственную жилищную инспекцию</b> (ГЖИ) через Госуслуги или сайт ГИС ЖКХ.",
+      "Дальше — <b>Роспотребнадзор</b> (вы потребитель услуг) и суд с взысканием перерасчёта, штрафа и морального вреда."
+    ],
+    deadline:"Заявку о нарушении фиксируйте <b>сразу</b> — перерасчёт делают с момента фиксации. Ответ на заявление о проверке начислений УК обязана дать быстро — не тяните с письменной формой.",
+    where:[
+      ["Управляющая компания","заявка + письменное заявление на перерасчёт"],
+      ["ГЖИ","главный надзор за УК, жалоба через ГИС ЖКХ"],
+      ["Роспотребнадзор и суд","штраф, перерасчёт, моральный вред"]
+    ]
+  },
+  {
+    emoji:"📵",
+    title:"Коллекторы давят",
+    sub:"Жёсткие лимиты на звонки — и право вообще отказаться от общения",
+    stamp:"Вам должны: покой. Звонки — максимум 8 раз в месяц",
+    law:["230-ФЗ ст. 6","230-ФЗ ст. 7","230-ФЗ ст. 8","КоАП ст. 14.57"],
+    lawnote:"Закон 230-ФЗ жёстко ограничивает взыскателей: звонки — не чаще 1 раза в сутки, 2 раз в неделю, 8 раз в месяц; встречи — 1 раз в неделю. Ночью (22:00–8:00 в будни, 20:00–9:00 в выходные) — нельзя. Угрозы, давление, звонки родственникам без согласия — запрещены.",
+    steps:[
+      "Фиксируйте всё: <b>записывайте звонки</b>, делайте скриншоты сообщений, ведите журнал — дата, время, номер, что говорили.",
+      "Сверьте с лимитами ст. 7: чаще <b>1/сутки, 2/неделю, 8/месяц</b> — уже нарушение. Каждое лишнее — повод для жалобы.",
+      "Через <b>4 месяца просрочки</b> вы вправе полностью отказаться от взаимодействия — направьте заявление через нотариуса или заказным письмом (ст. 8). После этого любой контакт незаконен.",
+      "Жалоба в <b>ФССП</b> — именно приставы надзирают за коллекторами. Штраф для агентства — до 500 тыс. ₽ (ст. 14.57 КоАП).",
+      "Угрозы жизни, здоровью, имуществу — это уже <b>полиция</b>, заявление о преступлении."
+    ],
+    deadline:"Право на полный отказ от общения — через <b>4 месяца</b> после начала просрочки. Записи звонков храните: это доказательства для ФССП и суда.",
+    where:[
+      ["ФССП","надзор за коллекторами, жалоба онлайн"],
+      ["Полиция","при угрозах и порче имущества"],
+      ["Банк России","если давит сам банк или МФО"]
+    ]
+  },
+  {
+    emoji:"🏥",
+    title:"Не дают бесплатную медпомощь по ОМС",
+    sub:"Навязывают платное? Сроки ожидания ограничены законом",
+    stamp:"Вам должны: врача, диагностику и лечение — бесплатно и в срок",
+    law:["323-ФЗ ст. 19","326-ФЗ ст. 16","Программа госгарантий"],
+    lawnote:"По программе госгарантий у ожидания есть предельные сроки: терапевт — 24 часа с обращения, узкий специалист — 14 календарных дней, КТ/МРТ и плановая госпитализация — тоже нормированы. «Талонов нет» — не основание для отказа.",
+    steps:[
+      "Требуйте <b>письменный отказ</b> с указанием причины. Обычно на этом «нет талонов» заканчивается.",
+      "Позвоните в свою <b>страховую компанию</b> — номер на полисе ОМС. Страховой представитель обязан решать такие ситуации, это его работа, звонок бесплатный.",
+      "Если навязывают платную услугу, которая входит в ОМС, — <b>откажитесь и зафиксируйте</b>: страховая проверит и добьётся бесплатного оказания. Уже заплатили? Деньги можно вернуть через страховую.",
+      "Жалоба главврачу в письменном виде — на нарушение сроков ожидания по программе госгарантий.",
+      "Не помогло — <b>ТФОМС</b> вашего региона и <b>Росздравнадзор</b> (через Госуслуги)."
+    ],
+    deadline:"Ориентиры по срокам ожидания: <b>терапевт — 24 часа</b>, <b>узкий специалист — 14 дней</b>, диагностика (КТ, МРТ) — <b>14 дней</b>, при онкоподозрении — быстрее. Превышение — повод для жалобы.",
+    where:[
+      ["Страховая компания","телефон на полисе ОМС — первый и самый быстрый ход"],
+      ["ТФОМС региона","контроль за медициной по ОМС"],
+      ["Росздравнадзор","жалоба через Госуслуги"]
+    ]
+  },
+  {
+    emoji:"🧾",
+    title:"Отказали в пособии или выплате",
+    sub:"Отказ должен быть письменным и мотивированным — и его можно сломать",
+    stamp:"Вам должны: письменный отказ с причиной — и право его обжаловать",
+    law:["81-ФЗ","ПП РФ № 2330","59-ФЗ ст. 12"],
+    lawnote:"Любой отказ СФР или соцзащиты обязан быть письменным, с конкретным основанием и ссылкой на норму. «Вам не положено» на словах — не отказ, а отговорка. Значительная часть отказов ломается на этапе обжалования.",
+    steps:[
+      "Получите <b>отказ в письменном виде</b> — в уведомлении на Госуслугах или на бумаге. Без него обжаловать нечего, и это ваше право.",
+      "Прочитайте основание отказа и <b>сверьте с правилами выплаты</b> (для единого пособия — ПП № 2330). Частые причины: не тот документ, ошибка в данных, неучтённый доход — это исправимо.",
+      "Если причина техническая — <b>подайте заявление заново</b> с исправленными документами. Это быстрее, чем спорить.",
+      "Если отказ по существу неправомерен — <b>досудебная жалоба</b>: через Госуслуги («жалоба на решение») или в вышестоящее отделение СФР.",
+      "Дальше — <b>прокуратура</b> (надзор за соцправами работает хорошо) и суд. Административный иск на решение органа — 3 месяца с момента, когда узнали об отказе."
+    ],
+    deadline:"Жалобу подавайте <b>сразу после отказа</b>. Для суда по КАС — <b>3 месяца</b> со дня, когда узнали о нарушении права. Все документы и уведомления сохраняйте.",
+    where:[
+      ["СФР / соцзащита","досудебная жалоба через Госуслуги"],
+      ["Прокуратура","надзор за назначением выплат"],
+      ["Суд","административный иск, срок — 3 месяца"]
+    ]
+  }
+];
+
+const cards = document.getElementById('cards');
+const list = document.getElementById('list');
+const detail = document.getElementById('detail');
+const detailContent = document.getElementById('detailContent');
+const backBtn = document.getElementById('backBtn');
+
+DATA.forEach((d,i)=>{
+  const b = document.createElement('button');
+  b.className = 'card';
+  b.innerHTML = `<span class="emoji">${d.emoji}</span><span><span class="t">${d.title}</span><br><span class="s">${d.sub}</span></span><span class="arrow">→</span>`;
+  b.addEventListener('click',()=>openDetail(i));
+  cards.appendChild(b);
+});
+
+// восьмая карточка: своя ситуация
+const ask = document.createElement('button');
+ask.className = 'card card--ask';
+ask.innerHTML = `<span class="emoji">✍️</span><span><span class="t">Моя ситуация другая</span><br><span class="s">Расскажите — разберём и подскажем, что вам должны</span></span><span class="arrow">→</span>`;
+ask.addEventListener('click',openAsk);
+cards.appendChild(ask);
+
+function openAsk(){
+  detailContent.innerHTML = `
+    <h2 class="d-title">✍️ Моя ситуация другая</h2>
+    <div class="stamp">Вам должны: ответ. Даже если ситуации нет в списке</div>
+    <p class="ask-text">Не нашли своё? Так бывает — жизнь богаче любого списка. Напишите нам: <b>что случилось, когда и что вы уже пробовали</b>. Мы разберём ситуацию, подскажем, на какой закон опереться, а самые частые вопросы превратим в новые разборы — так навигатор растёт благодаря вам.</p>
+    <a class="tg-btn" href="https://t.me/vam_dolzhny" target="_blank" rel="noopener">✈️ Написать нам в Telegram</a>
+    <p class="ask-hint">Канал «ВАМ ДОЛЖНЫ» — ваши права простыми словами. Пишите в комментариях под любым постом.</p>`;
+  list.classList.add('hidden');
+  detail.classList.add('open');
+  window.scrollTo({top:0});
+}
+
+function openDetail(i){
+  const d = DATA[i];
+  detailContent.innerHTML = `
+    <h2 class="d-title">${d.emoji} ${d.title}</h2>
+    <div class="stamp">${d.stamp}</div>
+    <div class="sec">
+      <h3>На чём стоим — закон</h3>
+      <div class="law">${d.law.map(l=>`<span>${l}</span>`).join('')}</div>
+      <p class="lawnote">${d.lawnote}</p>
+    </div>
+    <div class="sec">
+      <h3>Пошаговый план</h3>
+      <ol class="steps">${d.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
+    </div>
+    <div class="sec">
+      <h3>Сроки — не пропустите</h3>
+      <div class="deadline">${d.deadline}</div>
+    </div>
+    <div class="sec">
+      <h3>Куда идти, если не решается</h3>
+      <div class="where">${d.where.map(w=>`<div><b>${w[0]}</b><small>${w[1]}</small></div>`).join('')}</div>
+    </div>`;
+  list.classList.add('hidden');
+  detail.classList.add('open');
+  window.scrollTo({top:0});
+}
+
+backBtn.addEventListener('click',()=>{
+  detail.classList.remove('open');
+  list.classList.remove('hidden');
+  window.scrollTo({top:0});
+});
+</script>
+</body>
+</html>
