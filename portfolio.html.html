@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Портфолио — проекты, созданные с Claude</title>
+<meta name="description" content="Портфолио проектов: навигатор по правам «ДОЛЖНЫ», Telegram-канал «ВАМ ДОЛЖНЫ» и практика работы с Claude.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Podkova:wght@600;800&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ==== ПАЛИТРА — если в навигаторе другая, поменяй только эти строки ==== */
+  :root{
+    --bg:        #17191D;  /* графит, фон страницы */
+    --surface:   #21242B;  /* дым, карточки-«дела» */
+    --line:      #34383F;  /* линии и рамки */
+    --amber:     #E8A33D;  /* янтарь, акцент */
+    --amber-dim: #B87F2C;  /* янтарь приглушённый */
+    --text:      #ECEAE3;  /* основной текст */
+    --muted:     #C4C9D0;  /* вторичный текст */
+  }
+  /* ======================================================================= */
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Golos Text",system-ui,sans-serif;
+    font-size:19px;
+    line-height:1.7;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+
+  /* ---------- Шапка ---------- */
+  header{padding:72px 0 56px;border-bottom:1px solid var(--line)}
+  .kicker{
+    font-family:"JetBrains Mono",monospace;
+    font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--amber);margin-bottom:20px;
+  }
+  h1{
+    font-family:"Podkova",serif;font-weight:800;
+    font-size:clamp(30px,5.5vw,50px);line-height:1.15;
+    margin-bottom:22px;
+  }
+  h1 .amber{color:var(--amber)}
+  .lead{font-size:21px;color:var(--muted);max-width:660px}
+  .lead strong{color:var(--text);font-weight:600}
+
+  /* ---------- Секции ---------- */
+  section{padding:56px 0;border-bottom:1px solid var(--line)}
+  h2{
+    font-family:"Podkova",serif;font-weight:600;
+    font-size:clamp(21px,3.5vw,28px);margin-bottom:34px;
+  }
+
+  /* ---------- Карточка-«дело» ---------- */
+  .case{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:34px 34px 30px;
+    margin-bottom:36px;
+    position:relative;
+  }
+  .case-head{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    gap:16px;flex-wrap:wrap;margin-bottom:8px;
+  }
+  .case h3{
+    font-family:"Podkova",serif;font-weight:600;
+    font-size:clamp(20px,3vw,26px);line-height:1.25;
+  }
+  .stamp{
+    font-family:"JetBrains Mono",monospace;
+    font-size:16px;letter-spacing:.16em;font-weight:500;
+    color:var(--amber);
+    border:3px solid var(--amber);
+    border-radius:6px;
+    padding:8px 18px;
+    transform:rotate(-3deg);
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .case-sub{color:var(--muted);margin-bottom:30px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+
+  dl.fields{display:grid;gap:14px;margin-bottom:28px}
+  dl.fields > div{
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:16px 20px;
+  }
+  dl.fields dt{
+    font-family:"JetBrains Mono",monospace;
+    font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--amber);margin-bottom:8px;
+  }
+  dl.fields dd{color:var(--text);line-height:1.75}
+
+  .shot{
+    border:1px solid var(--line);border-radius:8px;
+    overflow:hidden;margin-bottom:26px;background:var(--bg);
+  }
+  .shot img{display:block;width:100%;height:auto}
+  .shot-note{
+    font-family:"JetBrains Mono",monospace;font-size:12px;
+    color:var(--muted);padding:10px 14px;border-top:1px solid var(--line);
+  }
+
+  .links{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    display:inline-block;
+    font-family:"Golos Text",sans-serif;font-weight:600;font-size:15px;
+    text-decoration:none;border-radius:8px;
+    padding:11px 22px;
+    transition:opacity .15s ease;
+  }
+  .btn:hover{opacity:.85}
+  .btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+  .btn-amber{background:var(--amber);color:#17191D}
+  .btn-ghost{border:1px solid var(--line);color:var(--text)}
+
+  /* ---------- Практика / подход ---------- */
+  .steps{display:grid;gap:16px}
+  .step{
+    display:grid;grid-template-columns:38px 1fr;gap:18px;align-items:start;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:18px 22px;
+  }
+  .step-mark{
+    font-family:"JetBrains Mono",monospace;font-size:15px;
+    color:var(--amber);border:1px solid var(--line);
+    border-radius:6px;width:38px;height:38px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .step p strong{color:var(--text)}
+  .step p{color:var(--text);line-height:1.75}
+
+  .note{
+    border-left:3px solid var(--amber);
+    padding:4px 0 4px 18px;
+    color:var(--muted);margin-top:30px;font-size:16px;
+  }
+
+  /* подложка для вводных абзацев секций */
+  .plate{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-left:4px solid var(--amber);
+    border-radius:8px;
+    padding:20px 24px;
+    color:var(--text);
+    margin-bottom:30px;
+  }
+
+  /* ---------- Контакты ---------- */
+  footer{padding:56px 0 80px}
+  footer p{color:var(--text);margin-bottom:18px;max-width:640px}
+  footer .links{margin-top:8px}
+
+  @media (max-width:600px){
+    .case{padding:24px 20px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .btn{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Портфолио · создано с Claude · июль 2026</div>
+    <h1>Диана Нейгум.<br>Перевожу законы на человеческий — <span class="amber">и это работает</span>.</h1>
+    <p class="lead">Делаю цифровые инструменты, которые помогают обычным людям получать то, что им <strong>положено по закону</strong>: выплаты, жильё, компенсации. Claude использую как рабочий инструмент — от идеи и текстов до готового кода и деплоя.</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>Проекты</h2>
+
+    <!-- ===================== ПРОЕКТ 1 ===================== -->
+    <article class="case">
+      <div class="case-head">
+        <h3>Навигатор по правам «ДОЛЖНЫ»</h3>
+        <div class="stamp">ЗАПУЩЕНО</div>
+      </div>
+      <p class="case-sub">Интерактивный сайт · HTML/CSS/JS · GitHub Pages</p>
+
+      <dl class="fields">
+        <div>
+          <dt>Что делает</dt>
+          <dd>Пользователь выбирает свою жизненную ситуацию (7 типовых сценариев) — и получает пошаговый план действий простым языком, со ссылками на конкретные статьи законов.</dd>
+        </div>
+        <div>
+          <dt>Для кого</dt>
+          <dd>Для обычных людей без юридического образования, которые не знают, что им положено, и боятся «бумажной» стороны вопроса.</dd>
+        </div>
+        <div>
+          <dt>Какую задачу решает</dt>
+          <dd>Снимает главный барьер между человеком и его правами — непонятный юридический язык. Вместо «изучите ФЗ-XXX» человек получает план: куда идти, что писать, на что ссылаться.</dd>
+        </div>
+      </dl>
+
+      <div class="shot">
+        <!-- Положи скриншот навигатора рядом с этим файлом под именем navigator.png -->
+        <img src="navigator.png" alt="Скриншот навигатора «ДОЛЖНЫ»: выбор ситуации и план действий со ссылками на закон">
+        <div class="shot-note">скриншот главного экрана · живая версия — по кнопке ниже</div>
+      </div>
+
+      <div class="links">
+        <a class="btn btn-amber" href="https://vamdolzhny.github.io/dolzhny/" target="_blank" rel="noopener">Открыть навигатор</a>
+      </div>
+    </article>
+
+    <!-- ===================== ПРОЕКТ 2 ===================== -->
+    <article class="case">
+      <div class="case-head">
+        <h3>Telegram-канал «ВАМ ДОЛЖНЫ»</h3>
+        <div class="stamp">В РАБОТЕ</div>
+      </div>
+      <p class="case-sub">Медиапроект · концепция, айдентика, контент-план</p>
+
+      <dl class="fields">
+        <div>
+          <dt>Что делает</dt>
+          <dd>Канал о правах, о которых молчат: разборы выплат, льгот и защит в формате «что положено → как получить». Название играет двумя смыслами: «вам должны» — и государство действительно должно.</dd>
+        </div>
+        <div>
+          <dt>Для кого</dt>
+          <dd>Для тех же людей, что и навигатор: канал — регулярный контакт с аудиторией, навигатор — инструмент для решения конкретной ситуации. Вместе они образуют одну систему.</dd>
+        </div>
+        <div>
+          <dt>Какую задачу решает</dt>
+          <dd>Люди теряют деньги и права просто потому, что не знают о них. Канал закрывает информационный разрыв регулярно и простым языком, без юридического тумана.</dd>
+        </div>
+      </dl>
+
+      <!-- Скриншот: положи файл channel.png рядом с portfolio.html и убери комментарий
+      <div class="shot">
+        <img src="channel.png" alt="Скриншот оформления канала «ВАМ ДОЛЖНЫ»">
+      </div>
+      -->
+
+      <div class="links">
+        <a class="btn btn-amber" href="https://t.me/vam_dolzhny" target="_blank" rel="noopener">Открыть канал</a>
+      </div>
+    </article>
+
+    <!-- ===================== ПРОЕКТ 3 (шаблон, если есть ещё работы с курса) =====================
+    <article class="case">
+      <div class="case-head">
+        <h3>Название проекта</h3>
+        <div class="stamp">ЗАПУЩЕНО</div>
+      </div>
+      <p class="case-sub">Тип проекта · технологии</p>
+      <dl class="fields">
+        <div><dt>Что делает</dt><dd>…</dd></div>
+        <div><dt>Для кого</dt><dd>…</dd></div>
+        <div><dt>Какую задачу решает</dt><dd>…</dd></div>
+      </dl>
+      <div class="links">
+        <a class="btn btn-amber" href="#" target="_blank" rel="noopener">Открыть</a>
+      </div>
+    </article>
+    ============================================================================================= -->
+
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Не только проекты: проверено на себе</h2>
+    <p class="plate">Подход «ДОЛЖНЫ» я сначала проверила на собственных делах — настоящих, с судами и ведомствами. Поэтому я знаю не в теории, каково это — добиваться положенного:</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-mark">✓</div>
+        <p><strong>Выиграла суд о жилье.</strong> Жильё взамен аварийного — моё дело: суд выигран, сейчас добиваюсь исполнения решения. Стратегию защиты для заседания готовила вместе с Claude.</p>
+      </div>
+      <div class="step">
+        <div class="step-mark">✓</div>
+        <p><strong>Дошла до федерального уровня — и получила результат.</strong> После отказа в социальной выплате подготовила официальное обращение — вопрос решился положительно.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Как я работаю с Claude</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-mark">01</div>
+        <p><strong>Задача, а не запрос.</strong> Формулирую контекст, аудиторию и результат — Claude выдаёт полный черновик, с которым я работаю как редактор.</p>
+      </div>
+      <div class="step">
+        <div class="step-mark">02</div>
+        <p><strong>Итерации до качества.</strong> Проверяю факты, ссылки на законы и формулировки — каждая цитата закона сверяется с первоисточником.</p>
+      </div>
+      <div class="step">
+        <div class="step-mark">03</div>
+        <p><strong>Безопасность перед публикацией.</strong> Каждый проект перед выкладкой проходит мой security-чеклист: никаких секретов в коде, проверенные зависимости, аудит сгенерированного кода «глазами незнакомого стажёра».</p>
+      </div>
+    </div>
+    <p class="note">Claude для меня — не «напиши за меня», а рабочий инструмент: он ускоряет, я отвечаю за результат.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h2>Связаться</h2>
+    <p>Открыта к проектам, где нужно перевести сложную систему — юридическую, бюрократическую, финансовую — на язык обычного человека.</p>
+    <div class="links">
+      <a class="btn btn-amber" href="https://t.me/diana_neygum" target="_blank" rel="noopener">Написать в Telegram</a>
+      <a class="btn btn-ghost" href="https://t.me/vam_dolzhny" target="_blank" rel="noopener">Канал «ВАМ ДОЛЖНЫ»</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
