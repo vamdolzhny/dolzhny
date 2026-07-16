@@ -420,9 +420,9 @@ function openAsk(){
   detailContent.innerHTML = `
     <h2 class="d-title">✍️ Моя ситуация другая</h2>
     <div class="stamp">Вам должны: ответ. Даже если ситуации нет в списке</div>
-    <p class="ask-text">Не нашли своё? Так бывает — жизнь богаче любого списка. Напишите нам: <b>что случилось, когда и что вы уже пробовали</b>. Мы разберём ситуацию, подскажем, на какой закон опереться, а самые частые вопросы превратим в новые разборы — так навигатор растёт благодаря вам.</p>
-    <a class="tg-btn" href="https://t.me/vam_dolzhny" target="_blank" rel="noopener">✈️ Написать нам в Telegram</a>
-    <p class="ask-hint">Канал «ВАМ ДОЛЖНЫ» — ваши права простыми словами. Пишите в комментариях под любым постом.</p>`;
+    <p class="ask-text">Не нашли своё? Так бывает — жизнь богаче любого списка. Опишите боту <b>что случилось, когда и что вы уже пробовали</b> — он разберёт ситуацию лично для вас: что положено, на какой закон опереться и какие шаги делать. Бесплатно, отвечает за минуту.</p>
+    <a class="tg-btn" href="https://t.me/dolzhny_pravo_bot" target="_blank" rel="noopener">🤖 Разобрать мою ситуацию</a>
+    <p class="ask-hint">А самые частые вопросы мы превращаем в новые разборы — так навигатор растёт благодаря вам. Канал «ВАМ ДОЛЖНЫ» — ваши права простыми словами: <a href="https://t.me/vam_dolzhny" target="_blank" rel="noopener">t.me/vam_dolzhny</a>.</p>`;
   list.classList.add('hidden');
   detail.classList.add('open');
   window.scrollTo({top:0});
@@ -449,6 +449,10 @@ function openDetail(i){
     <div class="sec">
       <h3>Куда идти, если не решается</h3>
       <div class="where">${d.where.map(w=>`<div><b>${w[0]}</b><small>${w[1]}</small></div>`).join('')}</div>
+    </div>
+    <div class="sec" style="text-align:center;">
+      <p class="ask-text" style="margin-bottom:12px;">Ваша ситуация отличается в деталях? Опишите её нашему боту — разберёт лично для вас.</p>
+      <a class="tg-btn" href="https://t.me/dolzhny_pravo_bot" target="_blank" rel="noopener">🤖 Спросить помощника «ДОЛЖНЫ»</a>
     </div>`;
   list.classList.add('hidden');
   detail.classList.add('open');
